@@ -78,4 +78,4 @@ async def on_ready():
     print(f'Bot online e sincronizado como {client.user}!')
 
 # Insira o Token do seu bot do Discord aqui
-client.run('SEU_TOKEN_DO_BOT_AQUI')
+client.run('MTU2ODAxNDI4OTgzNzYyMTI5OA.G02sWy.Jtf3V5gJzX2d1-tKzyuZAg7j4ZXQwhTBNsgl1c')
