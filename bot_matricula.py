@@ -3,8 +3,7 @@ from discord import app_commands
 import datetime
 
 # Cole o ID do cargo do seu servidor aqui (apenas números)
-CARGO_MATRICULADO_ID = 123456789012345678  
-
+CARGO_MATRICULADO_ID =1568000204655960265
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
@@ -79,4 +78,8 @@ async def on_ready():
     print(f'Bot online e sincronizado como {client.user}!')
 
 # Insira o Token do seu bot do Discord aqui
+<<<<<<< HEAD
 client.run('MTU2ODAxNDI4OTgzNzYyMTI5OA.G8vZwc.S0W5wyD5EazS4Ztblt1PXzkUyehc1lt3iSgOGQ')
+=======
+client.run('MTU2ODAxNDI4OTgzNzYyMTI5OA.G02sWy.Jtf3V5gJzX2d1-tKzyuZAg7j4ZXQwhTBNsgl1c')
+>>>>>>> 43f1d8036ee24de0a84d59c0fd4451963ba0adcf
