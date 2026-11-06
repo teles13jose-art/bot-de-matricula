@@ -1,18 +1,9 @@
-import os
-import datetime
 import discord
 from discord import app_commands
-from dotenv import load_dotenv
-
-# Carrega as variáveis do arquivo .env (para testes locais)
-load_dotenv()
-
-# Pega o token de forma segura do ambiente
-TOKEN = os.getenv("DISCORD_TOKEN")
+import datetime
 
 # Cole o ID do cargo do seu servidor aqui (apenas números)
-CARGO_MATRICULADO_ID = 123456789012345678  
-
+CARGO_MATRICULADO_ID =1568000204655960265
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
@@ -86,8 +77,5 @@ async def on_ready():
     await tree.sync()
     print(f'Bot online e sincronizado como {client.user}!')
 
-# Inicia o bot de forma segura usando a variável de ambiente
-if not TOKEN:
-    print("❌ Erro: A variável DISCORD_TOKEN não foi configurada!")
-else:
-    client.run(TOKEN)
+# Insira o Token do seu bot do Discord aqui
+client.run('SEU_TOKEN_DO_BOT_AQUI')
