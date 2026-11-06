@@ -1,9 +1,17 @@
+import os
+import datetime
 import discord
 from discord import app_commands
-import datetime
+from dotenv import load_dotenv
 
-# Cole o ID do cargo que o usuário deve receber ao se matricular
-CARGO_MATRICULADO_ID = 1568000204655960265  # Substitua pelo ID real do seu cargo
+# Carrega as variáveis do arquivo .env (para testes locais)
+load_dotenv()
+
+# Pega o token de forma segura do ambiente
+TOKEN = os.getenv("DISCORD_TOKEN")
+
+# Cole o ID do cargo do seu servidor aqui (apenas números)
+CARGO_MATRICULADO_ID = 123456789012345678  
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -27,7 +35,7 @@ class MatriculaModal(discord.ui.Modal, title="Formulário de Matrícula"):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
-        # Responde o usuário imediatamente para evitar erros de timeout
+        # Evita erro de tempo limite (timeout) do Discord
         await interaction.response.defer(ephemeral=True)
 
         user_nome = self.nome.value
@@ -35,15 +43,15 @@ class MatriculaModal(discord.ui.Modal, title="Formulário de Matrícula"):
         user_id_aluno = self.id_aluno.value
         data_atual = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-        # Formata o texto que vai para o arquivo .txt
+        # Formata o texto para salvar no arquivo .txt
         linha_registro = f"[{data_atual}] Nome: {user_nome} | Idade: {user_idade} | ID: {user_id_aluno}\n"
 
         try:
-            # Salva os dados no arquivo matriculas.txt
+            # Salva os dados no arquivo matriculas.txt local
             with open("matriculas.txt", "a", encoding="utf-8") as arquivo:
                 arquivo.write(linha_registro)
 
-            # Tenta dar o cargo automaticamente no servidor
+            # Atribui o cargo automaticamente
             guild = interaction.guild
             cargo_status = ""
             
@@ -54,9 +62,9 @@ class MatriculaModal(discord.ui.Modal, title="Formulário de Matrícula"):
                         await interaction.user.add_roles(cargo)
                         cargo_status = f" e o cargo **{cargo.name}** foi atribuído a você!"
                     except Exception:
-                        cargo_status = ", mas houve um erro ao dar o cargo (verifique a hierarquia do bot)."
+                        cargo_status = ", mas houve um erro ao dar o cargo (verifique as permissões do bot)."
                 else:
-                    cargo_status = ", mas o cargo configurado não foi encontrado no servidor."
+                    cargo_status = ", mas o ID do cargo configurado não foi encontrado no servidor."
 
             await interaction.followup.send(
                 f"✅ Matrícula realizada com sucesso, **{user_nome}**! Seus dados foram salvos{cargo_status}",
@@ -78,5 +86,8 @@ async def on_ready():
     await tree.sync()
     print(f'Bot online e sincronizado como {client.user}!')
 
-# Insira o Token do seu bot do Discord aqui
-client.run('MTU2ODAxNDI4OTgzNzYyMTI5OA.GNAZ0K.xebxo2YXQDIfIUlrH3WvqzMgh9VM-u7EER5IFg')
+# Inicia o bot de forma segura usando a variável de ambiente
+if not TOKEN:
+    print("❌ Erro: A variável DISCORD_TOKEN não foi configurada!")
+else:
+    client.run(TOKEN)
